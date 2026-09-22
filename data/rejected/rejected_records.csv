@@ -1,0 +1,5 @@
+﻿student_id,student_name,age,city,source,rejection_reason
+1008,Noor Saleh,21,Sanaa,csv,Duplicate record
+1011,,22,Sanaa,csv,Missing student_name
+1004,Mona Saleh,-21,Sanaa,csv,Invalid age
+1009,Omar Ali,15,Aden,csv,Invalid age

@@ -1,0 +1,38 @@
+﻿student_id,student_name,age,city,source
+1001,Ahmed Ali,21,Sanaa,csv
+1002,Sara Mohammed,22,Aden,csv
+1003,Omar Hassan,20,Taiz,csv
+1005,Khaled Ahmed,23,Ibb,csv
+1006,Huda Mohammed,22,Dhamar,csv
+1007,Ali Hassan,19,Ibb,csv
+1008,Noor Saleh,21,Sanaa,csv
+1010,Hassan Mohammed,24,Taiz,csv
+1012,Fatima Ali,25,Dhamar,csv
+1,Emily Johnson,29,Phoenix,api
+2,Michael Williams,36,Houston,api
+3,Sophia Brown,43,Washington,api
+4,James Davis,46,Seattle,api
+5,Emma Miller,31,Jacksonville,api
+6,Olivia Wilson,23,Fort Worth,api
+7,Alexander Jones,39,Indianapolis,api
+8,Ava Taylor,28,Fort Worth,api
+9,Ethan Martinez,34,San Antonio,api
+10,Isabella Anderson,32,New York,api
+11,Liam Garcia,30,Denver,api
+12,Mia Rodriguez,25,Jacksonville,api
+13,Noah Hernandez,41,New York,api
+14,Charlotte Lopez,37,Columbus,api
+15,William Gonzalez,33,San Jose,api
+16,Avery Perez,26,Columbus,api
+17,Evelyn Sanchez,38,San Diego,api
+18,Logan Torres,32,Columbus,api
+19,Abigail Rivera,29,Chicago,api
+20,Jackson Evans,35,New York,api
+1001,Ahmed Ali,,,database
+1002,Sara Mohammed,,,database
+1003,Khaled Hassan,,,database
+1004,Mona Saleh,,,database
+1005,Omar Ahmed,,,database
+1006,Huda Mohammed,,,database
+1007,Ali Hassan,,,database
+1008,Noor Saleh,,,database
