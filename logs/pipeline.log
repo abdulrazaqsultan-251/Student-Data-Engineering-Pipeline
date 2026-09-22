@@ -1,0 +1,26 @@
+2026-09-22 03:31:03,827 | INFO | Logger test successful.
+2026-09-22 03:32:29,581 | INFO | Pipeline started.
+2026-09-22 03:32:29,581 | INFO | Extracting CSV data.
+2026-09-22 03:32:29,585 | INFO | CSV extraction completed: 13 records.
+2026-09-22 03:32:29,585 | INFO | Extracting API data.
+2026-09-22 03:32:30,350 | INFO | API extraction completed: 20 records.
+2026-09-22 03:32:30,350 | INFO | Extracting database data.
+2026-09-22 03:32:30,350 | INFO | Database extraction completed: 26 records.
+2026-09-22 03:32:30,350 | INFO | Validating CSV source.
+2026-09-22 03:32:30,350 | INFO | CSV source validation completed.
+2026-09-22 03:32:30,350 | INFO | Standardizing CSV data.
+2026-09-22 03:32:30,354 | INFO | Standardizing API data.
+2026-09-22 03:32:30,356 | INFO | Standardizing database data.
+2026-09-22 03:32:30,359 | INFO | Integrating all data sources.
+2026-09-22 03:32:30,361 | INFO | Integration completed: 41 records.
+2026-09-22 03:32:30,361 | INFO | Cleaning integrated data.
+2026-09-22 03:32:30,366 | INFO | Cleaning completed: 37 clean records, 4 rejected records.
+2026-09-22 03:32:30,366 | INFO | Saving rejected records.
+2026-09-22 03:32:30,368 | INFO | Rejected records saved successfully.
+2026-09-22 03:32:30,369 | INFO | Transforming clean data.
+2026-09-22 03:32:30,369 | INFO | Transformation completed: 37 records.
+2026-09-22 03:32:30,369 | INFO | Running final validation.
+2026-09-22 03:32:30,369 | INFO | Final validation completed successfully.
+2026-09-22 03:32:30,369 | INFO | Saving final dataset.
+2026-09-22 03:32:30,369 | INFO | Final dataset saved successfully.
+2026-09-22 03:32:30,369 | INFO | Pipeline completed successfully.
