@@ -1,3 +1,5 @@
+from unittest import result
+
 import pandas as pd
 
 
@@ -6,6 +8,9 @@ STANDARD_COLUMNS = [
     "student_name",
     "age",
     "city",
+    "gpa",
+    "attendance",
+    "skills",
     "source",
 ]
 
@@ -40,6 +45,9 @@ def standardize_csv(
     ].copy()
 
     result["source"] = "csv"
+    result["gpa"] = pd.NA
+    result["attendance"] = pd.NA
+    result["skills"] = [[] for _ in range(len(result))]
 
     return result[
         STANDARD_COLUMNS
@@ -73,7 +81,11 @@ def standardize_api(
                 ).strip(),
                 "age": record.get("age"),
                 "city": address.get("city"),
+                "gpa": pd.NA,
+                "attendance": pd.NA,
+                "skills": [],
                 "source": "api",
+                
             }
         )
 
@@ -82,17 +94,54 @@ def standardize_api(
         columns=STANDARD_COLUMNS,
     )
 
-def standardize_database(
+def standardize_database(dataframe: pd.DataFrame) -> pd.DataFrame:
+    required_columns = [
+        "student_id",
+        "student_name",
+    ]
+
+    missing_columns = set(required_columns) - set(dataframe.columns)
+
+    if missing_columns:
+        raise ValueError(
+            f"Database data is missing required columns: "
+            f"{missing_columns}"
+        )
+
+    result = dataframe[
+        ["student_id", "student_name"]
+    ].copy()
+
+    # Remove duplicate database records
+    # before adding list-type columns.
+    result = result.drop_duplicates()
+
+    result["age"] = pd.NA
+    result["city"] = pd.NA
+    result["gpa"] = pd.NA
+    result["attendance"] = pd.NA
+    result["skills"] = [[] for _ in range(len(result))]
+    result["source"] = "database"
+
+    return result[STANDARD_COLUMNS]
+
+
+def standardize_mongodb(
     dataframe: pd.DataFrame,
 ) -> pd.DataFrame:
     """
-    Standardize SQLite records
+    Standardize MongoDB records
     into the common student schema.
     """
 
     required_columns = [
         "student_id",
         "student_name",
+        "age",
+        "city",
+        "gpa",
+        "attendance",
+        "skills",
     ]
 
     missing_columns = (
@@ -102,30 +151,26 @@ def standardize_database(
 
     if missing_columns:
         raise ValueError(
-            "Database data is missing required columns: "
+            "MongoDB data is missing required columns: "
             f"{sorted(missing_columns)}"
         )
 
     result = dataframe[
-        [
-            "student_id",
-            "student_name",
-        ]
+        required_columns
     ].copy()
 
-    # SQLite does not currently contain an age column.
-    result["age"] = pd.NA
-    result["city"] = pd.NA
-    result["source"] = "database"
+    result["source"] = "mongodb"
 
     return result[
         STANDARD_COLUMNS
-    ].drop_duplicates()
+    ]
+
 
 def integrate_data(
     csv_data: pd.DataFrame,
     api_data: pd.DataFrame,
     database_data: pd.DataFrame,
+    mongodb_data: pd.DataFrame,
 ) -> pd.DataFrame:
     """
     Combine standardized records from all data sources.
@@ -135,8 +180,8 @@ def integrate_data(
         csv_data,
         api_data,
         database_data,
+        mongodb_data,
     ]
-
     integrated_data = pd.concat(
         dataframes,
         ignore_index=True,

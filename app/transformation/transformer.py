@@ -1,17 +1,10 @@
 import pandas as pd
 
 
-def transform_student_data(
-    dataframe: pd.DataFrame,
-) -> pd.DataFrame:
-    """
-    Transform cleaned student data
-    into the final standardized format.
-    """
-
+def transform_student_data(dataframe):
     data = dataframe.copy()
 
-    # Normalize text fields
+    # Clean text columns
     text_columns = [
         "student_name",
         "city",
@@ -25,27 +18,37 @@ def transform_student_data(
             .str.strip()
         )
 
-    # Normalize student ID
+    # Convert numeric columns
     data["student_id"] = pd.to_numeric(
         data["student_id"],
         errors="coerce",
     ).astype("Int64")
 
-    # Normalize age
     data["age"] = pd.to_numeric(
         data["age"],
         errors="coerce",
     ).astype("Int64")
 
-    # Keep a clear and consistent column order
+    data["gpa"] = pd.to_numeric(
+        data["gpa"],
+        errors="coerce",
+    )
+
+    data["attendance"] = pd.to_numeric(
+        data["attendance"],
+        errors="coerce",
+    )
+
+    # Keep the complete standardized structure
     final_columns = [
         "student_id",
         "student_name",
         "age",
         "city",
+        "gpa",
+        "attendance",
+        "skills",
         "source",
     ]
 
-    return data[final_columns].reset_index(
-        drop=True
-    )
+    return data[final_columns].reset_index(drop=True)

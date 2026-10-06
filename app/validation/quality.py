@@ -101,11 +101,38 @@ def validate_final_data(
             "Final dataset contains invalid age values."
         )
 
+        # Validate GPA when available
+    if "gpa" in dataframe.columns:
+        invalid_gpa = dataframe[
+            dataframe["gpa"].notna()
+            & ~dataframe["gpa"].between(0, 4)
+        ]
+
+        if not invalid_gpa.empty:
+            raise ValueError(
+                "Invalid GPA values found. "
+                "GPA must be between 0 and 4."
+            )
+
+    # Validate attendance when available
+    if "attendance" in dataframe.columns:
+        invalid_attendance = dataframe[
+            dataframe["attendance"].notna()
+            & ~dataframe["attendance"].between(0, 100)
+        ]
+
+        if not invalid_attendance.empty:
+            raise ValueError(
+                "Invalid attendance values found. "
+                "Attendance must be between 0 and 100."
+            )
+
     # Source must identify the origin of each record
     allowed_sources = {
-        "csv",
-        "api",
-        "database",
+    "csv",
+    "api",
+    "database",
+    "mongodb",
     }
 
     invalid_sources = (
@@ -121,7 +148,19 @@ def validate_final_data(
 
     # The final dataset must not contain
     # exact duplicate records.
-    if dataframe.duplicated().any():
+    duplicate_columns = [
+        "student_id",
+        "student_name",
+        "age",
+        "city",
+        "gpa",
+        "attendance",
+        "source",
+    ]
+
+    if dataframe.duplicated(
+        subset=duplicate_columns
+    ).any():
         raise ValueError(
-            "Final dataset contains duplicate records."
+            "Duplicate records found in final data."
         )

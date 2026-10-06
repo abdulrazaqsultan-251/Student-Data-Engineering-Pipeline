@@ -6,11 +6,14 @@ from app.sources.api_source import extract_api
 from app.sources.csv_source import extract_csv
 from app.sources.database_source import extract_database
 from app.transformation.cleaner import clean_student_data
+from app.sources.mongodb_source import extract_mongodb
+from app.output.mongodb_writer import save_processed_data
 from app.transformation.integration import (
     integrate_data,
     standardize_api,
     standardize_csv,
     standardize_database,
+    standardize_mongodb,
 )
 from app.transformation.transformer import (
     transform_student_data,
@@ -57,6 +60,13 @@ def run_pipeline() -> None:
             "Database extraction completed: %d records.",
             len(database_raw),
         )
+        logger.info("Extracting MongoDB data.")
+        mongodb_raw = extract_mongodb()
+
+        logger.info(
+            "MongoDB extraction completed: %d records.",
+             len(mongodb_raw),
+        )
 
         # ==================================================
         # 2. Validate source data
@@ -81,13 +91,20 @@ def run_pipeline() -> None:
         database_data = standardize_database(
             database_raw
         )
+        logger.info("Standardizing MongoDB data.")
+
+        mongodb_data = standardize_mongodb(
+            mongodb_raw
+        )
 
         logger.info("Integrating all data sources.")
+     
 
         integrated_data = integrate_data(
             csv_data,
             api_data,
             database_data,
+            mongodb_data,
         )
 
         logger.info(
@@ -163,6 +180,8 @@ def run_pipeline() -> None:
 
         logger.info("Saving final dataset.")
 
+        logger.info("Saving final dataset.")
+
         save_final_dataset(
             transformed_data
         )
@@ -171,8 +190,14 @@ def run_pipeline() -> None:
             "Final dataset saved successfully."
         )
 
+        logger.info("Saving processed data to MongoDB.")
+
+        save_processed_data(
+            transformed_data
+        )
+
         logger.info(
-            "Pipeline completed successfully."
+            "Processed data saved to MongoDB successfully."
         )
 
         print()

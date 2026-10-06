@@ -9,6 +9,9 @@ from app.sources.database_source import (
     extract_database,
     setup_database,
 )
+from app.sources.mongodb_source import (
+    extract_mongodb,
+)
 from app.transformation.cleaner import (
     clean_student_data,
 )
@@ -17,6 +20,7 @@ from app.transformation.integration import (
     standardize_api,
     standardize_csv,
     standardize_database,
+    standardize_mongodb,
 )
 from app.transformation.transformer import (
     transform_student_data,
@@ -44,10 +48,15 @@ def build_integrated_data():
         extract_database()
     )
 
+    mongodb_data = standardize_mongodb(
+        extract_mongodb()
+    )
+
     return integrate_data(
         csv_data,
         api_data,
         database_data,
+        mongodb_data,
     )
 
 
@@ -179,12 +188,13 @@ def test_integration():
 
     dataframe = build_integrated_data()
 
-    assert len(dataframe) == 41
+    assert len(dataframe) == 50
 
     assert set(dataframe["source"]) == {
         "csv",
         "api",
         "database",
+        "mongodb",
     }
 
 
@@ -201,7 +211,7 @@ def test_transformation():
         clean
     )
 
-    assert len(transformed) == 37
+    assert len(transformed) == 46
 
     assert list(
         transformed.columns
@@ -210,6 +220,9 @@ def test_transformation():
         "student_name",
         "age",
         "city",
+        "gpa",
+        "attendance",
+        "skills",
         "source",
     ]
 
@@ -241,7 +254,7 @@ def test_final_dataset_exists():
         FINAL_DATASET_FILE
     )
 
-    assert len(dataframe) == 37
+    assert len(dataframe) == 46
 
     assert set(
         dataframe.columns
@@ -250,5 +263,8 @@ def test_final_dataset_exists():
         "student_name",
         "age",
         "city",
+        "gpa",
+        "attendance",
+        "skills",
         "source",
     }
