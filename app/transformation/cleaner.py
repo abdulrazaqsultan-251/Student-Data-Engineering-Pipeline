@@ -20,9 +20,23 @@ def clean_student_data(
     # ======================================================
     # Detect duplicate records
     # ======================================================
+    duplicate_columns = [
+    column
+    for column in [
+        "student_id",
+        "student_name",
+        "age",
+        "city",
+        "gpa",
+        "attendance",
+        "source",
+    ]
+        if column in data.columns
+    ]
 
     duplicate_mask = data.duplicated(
-        keep="first"
+        subset=duplicate_columns,
+        keep="first",
     )
 
     if duplicate_mask.any():
